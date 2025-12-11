@@ -1,6 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define MAX_LINE_LENGTH 6
+
+#define LOCK_STARTING_POSITION 50
+#define LOCK_MIN_VALUE 0
+#define LOCK_MAX_VALUE 99
+#define LOCK_LIMITER 100
+
 typedef enum Direction {
     LEFT,
     RIGHT
@@ -42,11 +49,10 @@ FILE* openInputFile(char* file_name) {
 }
 
 void process_lock_rotations(FILE* file) {
-    char line[6];
-    int lock_starting_pos = 50;
-    int lock_current_pos = lock_starting_pos;
+    char line[MAX_LINE_LENGTH];
+    int lock_current_pos = LOCK_STARTING_POSITION;
     int zero_counter = 0;
-    while (fgets(line, 6, file) != NULL) {
+    while (fgets(line, MAX_LINE_LENGTH, file) != NULL) {
         LockRotation* lock_rotation = get_lock_rotation(line);
         lock_current_pos = rotate_lock(lock_current_pos, lock_rotation);
         if (lock_current_pos == 0) zero_counter++;
@@ -75,16 +81,16 @@ int rotate_lock(int lock_position, LockRotation* rotation) {
 
 int rotate_lock_right(int lock_position, int value) {
     int target = lock_position + value;
-    if (target <= 99) {
+    if (target <= LOCK_MAX_VALUE) {
         return target;
     }
-    return (target - 100) % 100;
+    return (target - LOCK_LIMITER) % LOCK_LIMITER;
 }
 
 int rotate_lock_left(int lock_position, int value) {
     int target = lock_position - value;
-    if (target >= 0) {
+    if (target >= LOCK_MIN_VALUE) {
         return target;
     }
-    return (100 + target) % 100;
+    return (LOCK_LIMITER + target) % LOCK_LIMITER;
 }
