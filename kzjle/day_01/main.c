@@ -1,31 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-
-#define MAX_LINE_LENGTH 6
-
-#define LOCK_STARTING_POSITION 50
-#define LOCK_MIN_VALUE 0
-#define LOCK_MAX_VALUE 99
-#define LOCK_LIMITER 100
-
-typedef enum Direction {
-    LEFT,
-    RIGHT
-} LockDirection;
-
-typedef struct LockRotation {
-    LockDirection direction;
-    int value;
-} LockRotation;
-
-int rotate_lock(int lock_position, LockRotation* rotation);
-int rotate_lock_right(int lock_position, int value);
-int rotate_lock_left(int lock_position, int value);
-
-FILE* openInputFile(char* file_name);
-
-void process_lock_rotations(FILE* file);
-LockRotation* get_lock_rotation(char* line);
+#include "main.h"
 
 int main(int argc, char* argv[]) {
     if (argc == 1 || argc > 2) {
